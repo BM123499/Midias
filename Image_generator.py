@@ -16,6 +16,8 @@ image = np.zeros((720, 1280, 3), np.uint8)
 image[:, :, 0] = 255
 image[:, :, 1] = 255
 image[:, :, 2] = 255
+image2 = image.copy()
+
 cv.namedWindow("tela", 0)
 
 while len(lista_destino) < 4:
@@ -45,6 +47,7 @@ for i in range(4):
     min_y = min(min_y, y)
     max_x = max(max_x, x)
     max_y = max(max_y, y)
+    image2[x, y, :] = 0
     cv.circle(image, (y, x), 1, (255, 255, 255), 2)
 
 for i in range(min_x, max_x+1):
@@ -55,9 +58,8 @@ for i in range(min_x, max_x+1):
         y = round(pixel_alvo[1][0])
         if 0 <= x < dimensions[0] and 0 <= y < dimensions[1]:
             image[i, j] = xi[x, y]
-        else:
-            image[i, j] = [255, 255, 255]
 
 cv.imshow("tela", image)
 cv.waitKey(0)
-cv.imwrite("img.jpeg", image)
+cv.imwrite("img.png", image)
+cv.imwrite("img2.png", image2)

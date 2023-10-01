@@ -7,31 +7,37 @@ global lista_origem
 lista_origem = []
 
 
-def click_event1(event, x, y, flags, params):
+def click_event(event, x, y, flags, params):
     if event == cv.EVENT_LBUTTONDOWN:
         global lista_destino
         lista_destino.append((y, x))
         cv.circle(image, (x, y), 1, (0, 0, 255), 2)
 
+image_origem = cv.imread("img2.png", 0)
+lista_origem = [(x, y) for x in range(image_origem.shape[0])
+                       for y in range(image_origem.shape[1])
+                       if image_origem[x, y] == 0]
 
-def click_event2(event, x, y, flags, params):
-    if event == cv.EVENT_LBUTTONDOWN:
-        global lista_origem
-        lista_origem.append((y, x))
-        cv.circle(image, (x, y), 1, (0, 255, 255), 2)
+global ponto_medio
+ponto_medio = [0, 0]
+for p in lista_origem:
+    ponto_medio[0] += p[0]
+    ponto_medio[1] += p[1]
 
+ponto_medio[0] /= len(lista_origem)
+ponto_medio[1] /= len(lista_origem)
 
-image = cv.imread("img.jpeg", 1)
+print(ponto_medio)
+print(len(lista_origem))
+print(lista_origem)
+
+image = cv.imread("img.png", 1)
 dimensions = image.shape
 image2 = image.copy()
 
 while len(lista_destino) < 4:
     cv.imshow("tela", image)
-    cv.setMouseCallback('tela', click_event1)
-    cv.waitKey(1)
-while len(lista_origem) < 4:
-    cv.imshow("tela", image)
-    cv.setMouseCallback('tela', click_event2)
+    cv.setMouseCallback('tela', click_event)
     cv.waitKey(1)
 cv.imshow("tela", image)
 cv.waitKey(1000)
